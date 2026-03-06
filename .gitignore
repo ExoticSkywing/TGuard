@@ -58,3 +58,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# AI Agent Skills
+.agent/

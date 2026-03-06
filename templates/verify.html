@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %}人机验证 - TGuard{% endblock %}
+{% block title %}人机验证 - Nebuluxe{% endblock %}
 
 {% block extra_head %}
 <!-- Load captcha script based on provider -->
@@ -11,41 +11,51 @@
 {% elif captcha_config.provider == 'turnstile' %}
 <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 {% endif %}
+<!-- Canvas Confetti Engine for Ultimate Celebration -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
 {% endblock %}
 
 {% block content %}
-<div class="flex-1 flex flex-col justify-center">
-    <div class="card">
-        <div class="text-center mb-8">
-            <div class="text-6xl mb-4">🔐</div>
-            <h1 class="text-2xl font-bold mb-2 text-fg">人机验证</h1>
-            <p class="text-fg-secondary">请完成下方的人机验证</p>
+<div class="flex-1 flex flex-col p-4 w-full max-w-md mx-auto justify-center">
+    <div class="text-center mb-6">
+        <div class="text-7xl animate-float inline-block">🚦</div>
+        <h2 class="font-display text-4xl font-black mt-2 text-brand-black uppercase">安全检查站</h2>
+        <p class="font-sans font-bold text-brand-pink mt-1">证明你不是外星人 👽</p>
+    </div>
+
+    <div class="brutal-card bg-brand-yellow p-6 relative" id="main-card">
+        <div class="absolute -top-4 -right-4 bg-brand-black text-white px-3 py-1 font-display font-bold transform rotate-6 border-2 border-brand-black z-10 text-sm"
+            id="must-do-badge">
+            MUST DO
         </div>
 
         <div class="space-y-6" id="verificationContainer">
-            <div class="flex justify-center">
-                {% if captcha_config.provider == 'hcaptcha' %}
-                <!-- hCaptcha will be rendered here -->
-                <div id="hcaptcha-container"></div>
-                {% elif captcha_config.provider == 'cap' %}
-                <!-- Cap.js widget will be rendered here -->
-                <cap-widget
-                        data-cap-api-endpoint="{{ captcha_config.endpoint }}"
-                        data-cap-site-key="{{ captcha_config.site_key }}"
-                        id="cap-widget"
-                ></cap-widget>
-                {% elif captcha_config.provider == 'turnstile' %}
-                <!-- Turnstile widget will be rendered here -->
-                <div id="turnstile-container"></div>
-                {% endif %}
+            <div class="relative w-full flex justify-center items-center min-h-[78px]" id="captcha-container">
+                <!-- Capthca Widgets -->
+                <div class="relative z-10 flex justify-center w-full" id="captcha-wrapper">
+                    {% if captcha_config.provider == 'hcaptcha' %}
+                    <div id="hcaptcha-container"></div>
+                    {% elif captcha_config.provider == 'cap' %}
+                    <cap-widget data-cap-api-endpoint="{{ captcha_config.endpoint }}"
+                        data-cap-site-key="{{ captcha_config.site_key }}" id="cap-widget"></cap-widget>
+                    {% elif captcha_config.provider == 'turnstile' %}
+                    <div id="turnstile-container"></div>
+                    {% endif %}
+                </div>
             </div>
         </div>
 
-        <div class="mt-6 text-center">
-            <div class="text-sm text-fg-hint">
-                <p>💡 完成人机验证后页面会自动刷新，请稍等</p>
-                <p>⚡ 由 TGuard 提供技术支持</p>
-            </div>
+        <div class="mt-6 text-center border-t-4 border-brand-black pt-4" id="footer-hints">
+            <p
+                class="font-sans font-bold text-brand-black bg-white inline-block px-3 py-1 border-2 border-brand-black rounded-lg shadow-brutal-sm text-sm mb-3">
+                💡 完成验证后自动刷新
+            </p>
+            <br>
+            <p class="font-sans font-bold text-sm text-brand-black">
+                ⚡ <a href="https://t.me/nebuluxe" target="_blank"
+                    class="text-brand-blue hover:text-brand-pink underline decoration-2 underline-offset-2">Nebuluxe</a>
+                强力驱动
+            </p>
         </div>
     </div>
 
@@ -61,7 +71,7 @@
     const captchaProvider = "{{ captcha_config.provider }}";
     const expectedUserId = {{ expected_user_id }};
     let captchaResponse = null;
-    
+
     // Get user ID from Telegram Web App
     let telegramUserId = null;
     try {
@@ -71,7 +81,7 @@
     } catch (e) {
         console.error('Failed to get Telegram user ID:', e);
     }
-    
+
     // Verify user ID matches on page load
     if (telegramUserId !== null && telegramUserId !== expectedUserId) {
         showError('用户身份验证失败，此验证链接不属于您');
@@ -79,28 +89,29 @@
         // Hide captcha container
         const container = document.getElementById('verificationContainer');
         if (container) {
-            container.innerHTML = '<div class="text-center text-red-600">❌ 用户身份验证失败</div>';
+            container.innerHTML = '<div class="text-center text-[#EF4444] font-bold text-xl mt-4">❌ 用户身份验证失败</div>';
         }
     }
 
+    // Function to hide loading and show captcha
+    function onCaptchaLoaded() {
+        const loading = document.getElementById('loading');
+        const wrapper = document.getElementById('captcha-wrapper');
+        if (loading) loading.style.display = 'none';
+        if (wrapper) wrapper.style.opacity = '1';
+    }
+
     {% if captcha_config.provider == 'hcaptcha' %}
-    // hCaptcha configuration
     const hcaptchaConfig = {
         sitekey: "{{ captcha_config.siteKey }}",
         theme: "{{ captcha_config.theme }}",
         size: "{{ captcha_config.size }}",
         callback: function (response) {
             captchaResponse = response;
-
-            // Haptic feedback
             hapticSuccess();
-
-            // Auto-submit after a short delay
             setTimeout(() => {
-                if (captchaResponse) {
-                    submitVerification();
-                }
-            }, 2000);
+                if (captchaResponse) submitVerification();
+            }, 800); // 提速，不等太久
         },
         'expired-callback': function () {
             captchaResponse = null;
@@ -111,7 +122,6 @@
         }
     };
     {% elif captcha_config.provider == 'turnstile' %}
-    // Turnstile configuration
     const turnstileConfig = {
         sitekey: "{{ captcha_config.siteKey }}",
         theme: "{{ captcha_config.theme }}",
@@ -119,16 +129,10 @@
         language: "{{ captcha_config.language }}",
         callback: function (token) {
             captchaResponse = token;
-
-            // Haptic feedback
             hapticSuccess();
-
-            // Auto-submit after a short delay
             setTimeout(() => {
-                if (captchaResponse) {
-                    submitVerification();
-                }
-            }, 2000);
+                if (captchaResponse) submitVerification();
+            }, 800);
         },
         'expired-callback': function () {
             captchaResponse = null;
@@ -139,103 +143,75 @@
         }
     };
     {% elif captcha_config.provider == 'cap' %}
-
-    // Cap.js configuration - using event listeners
     function onCapSolve(event) {
         captchaResponse = event.detail.token;
-
-        // Haptic feedback
         hapticSuccess();
-
-        // Auto-submit after a short delay
         setTimeout(() => {
-            if (captchaResponse) {
-                submitVerification();
-            }
-        }, 2000);
+            if (captchaResponse) submitVerification();
+        }, 800);
     }
-
     function onCapError(event) {
         showError('验证组件加载失败，请刷新页面重试');
         hapticError();
     }
-
     function onCapExpire(event) {
         captchaResponse = null;
     }
-
     {% endif %}
 
-    // Initialize captcha when page loads
     document.addEventListener('DOMContentLoaded', function () {
         {% if captcha_config.provider == 'hcaptcha' %}
-        // Wait for hCaptcha script to load
         const checkHCaptcha = setInterval(function () {
             if (typeof hcaptcha !== 'undefined') {
                 clearInterval(checkHCaptcha);
-
                 try {
-                    // Render hCaptcha
                     hcaptcha.render('hcaptcha-container', hcaptchaConfig);
                 } catch (error) {
-                    showError('验证组件初始化失败，请刷新页面重试');
+                    showError('验证组件初始化失败');
                 }
             }
         }, 100);
-
-        // Timeout if hCaptcha doesn't load
         setTimeout(function () {
             if (typeof hcaptcha === 'undefined') {
                 clearInterval(checkHCaptcha);
                 showError('验证组件加载超时，请检查网络连接');
             }
         }, 10000);
+
         {% elif captcha_config.provider == 'turnstile' %}
-        // Wait for Turnstile script to load
         const checkTurnstile = setInterval(function () {
             if (typeof turnstile !== 'undefined') {
                 clearInterval(checkTurnstile);
-
                 try {
-                    // Render Turnstile
                     turnstile.render('#turnstile-container', turnstileConfig);
                 } catch (error) {
-                    showError('验证组件初始化失败，请刷新页面重试');
+                    showError('验证组件初始化失败');
                 }
             }
         }, 100);
-
-        // Timeout if Turnstile doesn't load
         setTimeout(function () {
             if (typeof turnstile === 'undefined') {
                 clearInterval(checkTurnstile);
                 showError('验证组件加载超时，请检查网络连接');
             }
         }, 10000);
+
         {% elif captcha_config.provider == 'cap' %}
-        // Wait for Cap.js script to load and setup event listeners
         const setupCapWidget = () => {
             const capWidget = document.getElementById('cap-widget');
             if (!capWidget) {
-                showError('验证组件初始化失败，请刷新页面重试');
+                showError('验证组件初始化失败');
                 return;
             }
-
-            // Add event listeners
             capWidget.addEventListener('solve', onCapSolve);
             capWidget.addEventListener('error', onCapError);
             capWidget.addEventListener('expire', onCapExpire);
         };
-
-        // Check if Cap.js is loaded
         let checkCapLoaded = 0;
         const checkCapInterval = setInterval(() => {
             checkCapLoaded++;
-
-            // Check if Cap.js custom elements are defined
             if (customElements.get('cap-widget') || checkCapLoaded > 50) {
                 clearInterval(checkCapInterval);
-
                 if (customElements.get('cap-widget')) {
                     setupCapWidget();
                 } else {
@@ -246,7 +222,6 @@
         {% endif %}
     });
 
-    // Verification submission function
     async function submitVerification() {
         if (!captchaResponse) {
             showError('请先完成人机验证');
@@ -254,15 +229,19 @@
             return;
         }
 
-        // Show loading in the message area instead
-        showSuccess('🔄 验证中，请稍候...');
+        const loadingHTML = `
+            <div class="flex flex-col items-center justify-center p-8">
+                <span class="brutal-spinner w-12 h-12 mb-6 border-[6px]"></span>
+                <p class="font-display font-black text-xl text-brand-black" style="animation: pulse 1s infinite;">校验中...</p>
+            </div>
+        `;
+        document.getElementById('verificationContainer').innerHTML = loadingHTML;
+        document.getElementById('footer-hints').style.display = 'none';
 
         try {
             const response = await fetch(`${apiBaseUrl}/api/v1/verify`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
                     token: token,
                     captcha_response: captchaResponse,
@@ -273,27 +252,119 @@
             const result = await response.json();
 
             if (response.ok && result.success) {
-                showSuccess(result.message);
                 hapticSuccess();
 
-                // No submit button to hide
+                // 彻底替换为主观视觉上的成功页面风格
+                const mainCard = document.getElementById('main-card');
+                mainCard.className = "brutal-card bg-brand-green p-8 text-center relative";
+                mainCard.style.animation = "brutalPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards";
+                mainCard.innerHTML = `
+                    <div class="relative z-10 font-sans">
+                        <div class="text-8xl mb-4 relative z-10" style="display:inline-block; animation: float 4s ease-in-out infinite;">🥳</div>
+                        
+                        <!-- 夸张的斜体高亮欢迎语 -->
+                        <div class="transform -rotate-2 relative z-10 mb-6">
+                            <h1 class="font-display text-4xl font-black text-white bg-brand-black inline-block px-4 py-2 border-4 border-brand-black shadow-brutal-sm uppercase">验证成功！</h1>
+                            <p class="font-bold text-lg text-brand-black mt-2">
+                                <span class="bg-[#FCD34D] px-2 py-1 inline-block transform rotate-1 border-2 border-brand-black">欢迎登舰，指挥官！</span>
+                            </p>
+                        </div>
 
-                // Show Telegram close button
+                        <!-- 强烈的指示框 -->
+                        <div class="space-y-3 font-bold text-brand-black bg-white p-4 border-4 border-brand-black shadow-brutal-sm text-sm relative z-10 transform rotate-1 mb-8" style="animation: pulse 2s infinite;">
+                            <div class="flex items-center justify-center gap-2 text-xl">
+                                <span>✅</span>
+                                <span>身份已确认为 100% 碳基生物</span>
+                            </div>
+                            <div class="text-brand-pink font-display uppercase tracking-widest text-xs pt-2 border-t-2 border-dashed border-brand-black">
+                                请安全关闭此页面并返回群聊
+                            </div>
+                        </div>
+                        
+                        <div class="mt-4 relative z-10 w-full" id="one-more-time-container">
+                            <button onclick="window.playConfettiOnce(this)" class="brutal-btn brutal-btn-pink w-full py-4 flex items-center justify-center gap-3 transition-all duration-500 ease-out uppercase" style="font-size: 1.25rem; border-width: 4px;">
+                                <span>🔥 再爽一次 🔥</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                // Fire extremely realistic confetti
+                window.playConfettiOnce = function (btn) {
+                    try {
+                        // 如果是由按钮触发的，执行优雅消失逻辑
+                        if (btn) {
+                            btn.style.opacity = '0';
+                            btn.style.transform = 'scale(0.8) translateY(10px)';
+                            btn.style.pointerEvents = 'none';
+                            setTimeout(() => {
+                                const container = document.getElementById('one-more-time-container');
+                                if (container) container.remove();
+                            }, 500);
+                        }
+
+                        if (typeof confetti !== 'function') return;
+
+                        const duration = 3000;
+                        const end = Date.now() + duration;
+
+                        (function frame() {
+                            try {
+                                confetti({
+                                    particleCount: 5,
+                                    angle: 60,
+                                    spread: 55,
+                                    origin: { x: 0 },
+                                    colors: ['#4338CA', '#EC4899', '#10B981', '#FBBF24']
+                                });
+                                confetti({
+                                    particleCount: 5,
+                                    angle: 120,
+                                    spread: 55,
+                                    origin: { x: 1 },
+                                    colors: ['#4338CA', '#EC4899', '#10B981', '#FBBF24']
+                                });
+
+                                if (Date.now() < end) {
+                                    requestAnimationFrame(frame);
+                                }
+                            } catch (err) { }
+                        }());
+
+                        // 添加爽快的连续震动反馈 (多巴胺节奏)
+                        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+                            // 瞬间重击
+                            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+
+                            // 前 1.5 秒密集震动
+                            let vibeCount = 0;
+                            const vibeInt = setInterval(() => {
+                                window.Telegram.WebApp.HapticFeedback.impactOccurred(vibeCount % 3 === 0 ? 'medium' : 'light');
+                                vibeCount++;
+                                if (vibeCount > 15) clearInterval(vibeInt);
+                            }, 100);
+                        }
+                    } catch (e) {
+                        console.warn('Confetti animation skipped due to error:', e);
+                    }
+                };
+                // 初次加载时触发
+                window.playConfettiOnce();
+
+                // 移除原有的 MUST DO 标签
+                const badge = document.getElementById('must-do-badge');
+                if (badge) badge.remove();
+
                 tg.MainButton.setText('🎉 关闭页面');
                 tg.MainButton.show();
                 tg.MainButton.enable();
 
-                // Setup success UI
                 setTimeout(() => {
-                    showSuccess('🎉 验证成功！点击下方 Telegram 按钮关闭页面');
-
-                    // Clear any existing onClick handlers and setup close function
                     tg.MainButton.offClick();
                     tg.MainButton.onClick(() => {
                         if (result.redirect_url) {
                             try {
                                 window.location.href = result.redirect_url;
-                                // Fallback close after redirect attempt
                                 setTimeout(() => closeWebApp(), 1000);
                             } catch (e) {
                                 closeWebApp();
@@ -302,7 +373,6 @@
                             closeWebApp();
                         }
                     });
-
                 }, 500);
 
             } else {
@@ -359,15 +429,19 @@
         0% {
             transform: scale(1);
         }
+
         50% {
             transform: scale(1.05);
         }
+
         100% {
             transform: scale(1);
         }
     }
 
-    #hcaptcha-container, #cap-widget, #turnstile-container {
+    #hcaptcha-container,
+    #cap-widget,
+    #turnstile-container {
         min-height: 78px;
         display: flex;
         justify-content: center;

@@ -55,7 +55,7 @@ class CapProvider(CaptchaProvider):
                     json=data,  # Cap.js typically uses JSON
                     headers={
                         "Content-Type": "application/json",
-                        "User-Agent": user_agent or "TGuard-Bot/1.0"
+                        "User-Agent": user_agent or "Nebuluxe-Bot/1.0"
                     }
                 )
 

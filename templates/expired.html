@@ -1,45 +1,57 @@
 {% extends "base.html" %}
 
-{% block title %}验证已过期 - TGuard{% endblock %}
+{% block title %}验证已过期 - Nebuluxe{% endblock %}
 
 {% block content %}
-<div class="flex-1 flex flex-col justify-center">
-    <div class="card">
-        <div class="text-center">
-            <div class="text-8xl mb-6">⏰</div>
-            <h1 class="text-3xl font-bold mb-4 text-orange-600">验证已过期</h1>
-            <p class="text-lg mb-6 text-gray-600">{{ message }}</p>
+<div class="flex-1 flex flex-col p-4 w-full max-w-md mx-auto justify-center">
+    <div class="brutal-card bg-white p-6 relative">
+        <div class="absolute -top-6 -left-4 text-6xl animate-wiggle opacity-80">⏰</div>
 
-            <div class="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-6">
-                <div class="text-orange-700">
-                    <div class="font-medium mb-2">💡 如何重新验证：</div>
-                    <ol class="text-left space-y-1 text-sm">
-                        <li>1. 返回应用</li>
-                        <li>2. 重新发起验证</li>
-                        <li>3. 点击新的验证链接</li>
-                    </ol>
+        <div class="text-center mt-4">
+            <div class="text-8xl mb-4 font-display font-black text-brand-black opacity-30">OUT<br>OF<br>TIME</div>
+            <h1
+                class="font-display text-4xl font-black mb-3 text-brand-black uppercase absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-full bg-brand-yellow py-2 border-y-4 border-brand-black rotate-2 shadow-brutal-sm">
+                验证已过期
+            </h1>
+
+            <p
+                class="font-sans font-bold text-lg text-white bg-brand-black inline-block px-4 py-2 mt-8 mb-6 border-2 border-brand-black rounded-sm shadow-brutal-sm">
+                {{ message }}
+            </p>
+
+            <div
+                class="bg-brand-pink border-4 border-brand-black rounded-lg p-4 mb-6 shadow-brutal-sm hover:-translate-y-1 transition-transform">
+                <div class="text-brand-black">
+                    <div class="font-display font-black text-xl mb-3 text-white uppercase tracking-wider">💡 时间回溯秘籍
+                    </div>
+                    <ul
+                        class="text-left space-y-2 text-sm font-bold bg-white p-3 border-2 border-brand-black rounded-lg">
+                        <li class="flex items-center space-x-2"><span
+                                class="text-brand-blue bg-blue-100 rounded-full w-6 h-6 flex items-center justify-center font-display">1</span><span>返回
+                                Telegram 应用</span></li>
+                        <li class="flex items-center space-x-2"><span
+                                class="text-brand-pink bg-pink-100 rounded-full w-6 h-6 flex items-center justify-center font-display">2</span><span>重新发送加群请求</span>
+                        </li>
+                        <li class="flex items-center space-x-2"><span
+                                class="text-brand-green bg-green-100 rounded-full w-6 h-6 flex items-center justify-center font-display">3</span><span>点击新的星际链接！</span>
+                        </li>
+                    </ul>
                 </div>
             </div>
 
-            <div class="space-y-3">
-                <button
-                        class="tg-button w-full"
-                        onclick="closeWebApp()"
-                >
-                    返回 Telegram
-                </button>
-
-                <button
-                        class="bg-gray-200 text-gray-700 border border-gray-300 rounded-lg px-6 py-3 w-full"
-                        onclick="window.location.reload()"
-                >
-                    刷新页面
+            <div class="space-y-4">
+                <button class="brutal-btn w-full" onclick="closeWebApp()">
+                    🚀 穿越回 Telegram
                 </button>
             </div>
 
-            <div class="mt-6 text-sm text-gray-500">
-                <p>🕐 验证链接有效期：5分钟</p>
-                <p>⚡ 由 TGuard 提供技术支持</p>
+            <div class="mt-6 border-t-4 border-brand-black pt-4 flex flex-col items-center">
+                <p class="font-sans font-bold text-sm text-brand-black mb-2 opacity-70">🕐 上班时间只有 5 分钟，早干嘛去了...</p>
+                <p class="font-sans font-bold text-sm text-brand-black">
+                    ⚡ <a href="https://t.me/nebuluxe" target="_blank"
+                        class="text-brand-blue hover:text-brand-pink underline decoration-2 underline-offset-2 transition-colors">Nebuluxe</a>
+                    强力驱动
+                </p>
             </div>
         </div>
     </div>

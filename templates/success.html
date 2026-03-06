@@ -1,37 +1,43 @@
 {% extends "base.html" %}
 
-{% block title %}验证成功 - TGuard{% endblock %}
+{% block title %}验证成功 - Nebuluxe{% endblock %}
+
+{% block extra_head %}
+<!-- Canvas Confetti Engine for Ultimate Celebration -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+{% endblock %}
 
 {% block content %}
-<div class="flex-1 flex flex-col justify-center">
-    <div class="card success-animation">
-        <div class="text-center">
-            <div class="text-8xl mb-6">🎉</div>
-            <h1 class="text-3xl font-bold mb-4 text-green-600">验证成功！</h1>
-            <p class="text-lg mb-6 text-gray-600">您已成功完成人机验证！</p>
+<div class="flex-1 flex flex-col p-4 w-full max-w-md mx-auto justify-center">
+    <div class="brutal-card bg-brand-green p-8 text-center success-pop relative">
+        <div class="text-8xl mb-6 relative z-10"
+            style="display:inline-block; animation: float 4s ease-in-out infinite;">🥳</div>
+        <h1 class="font-display text-4xl font-black mb-3 text-brand-black uppercase relative z-10">验证成功！</h1>
 
-            <div class="space-y-4">
-                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <div class="flex items-center justify-center space-x-2 text-green-700">
-                        <span class="text-xl">✅</span>
-                        <span class="font-medium">身份验证通过</span>
-                    </div>
-                </div>
-            </div>
+        <p
+            class="font-sans font-bold text-lg text-brand-black bg-white inline-block px-4 py-2 border-2 border-brand-black rounded-sm shadow-brutal-sm transform rotate-1 mb-6 relative z-10">
+            欢迎登舰，指挥官！
+        </p>
 
-            <div class="mt-8">
-                <button
-                        class="tg-button w-full"
-                        onclick="closeWebApp()"
-                >
-                    返回 Telegram
-                </button>
-            </div>
+        <div class="space-y-4 font-sans font-bold text-brand-black bg-white p-3 border-2 border-brand-black rounded-lg shadow-brutal-sm text-sm relative z-10"
+            style="animation: pulse 2s infinite;">
+            ✅ 身份验证已通过，您可以关闭此页面返回 Telegram
+        </div>
 
-            <div class="mt-6 text-sm text-gray-500">
-                <p>🔒 本次验证受到加密保护</p>
-                <p>⚡ 由 TGuard 提供技术支持</p>
-            </div>
+        <div class="mt-4 w-full relative z-10" id="one-more-time-container">
+            <button onclick="playConfettiOnce(this)"
+                class="brutal-btn brutal-btn-pink w-full py-2 flex items-center justify-center gap-2 transition-all duration-500 ease-out"
+                style="font-size: 1rem; border-width: 3px;">
+                <span>再爽一次 💥</span>
+            </button>
+        </div>
+
+        <div class="mt-8 text-center pb-2 relative z-10">
+            <p class="font-sans font-bold text-sm text-brand-black">
+                ⚡ <a href="https://t.me/nebuluxe" target="_blank"
+                    class="text-brand-blue hover:text-brand-pink underline decoration-2 underline-offset-2">Nebuluxe</a>
+                强力驱动
+            </p>
         </div>
     </div>
 </div>
@@ -39,15 +45,75 @@
 
 {% block extra_scripts %}
 <script>
-    // Auto-close after 3 seconds
-    setTimeout(() => {
-        closeWebApp();
-    }, 2000);
+    function playConfettiOnce(btn) {
+        if (btn) {
+            btn.style.opacity = '0';
+            btn.style.transform = 'scale(0.8) translateY(10px)';
+            btn.style.pointerEvents = 'none';
+            setTimeout(() => {
+                const container = document.getElementById('one-more-time-container');
+                if (container) container.remove();
+            }, 500);
+        }
 
-    // Haptic feedback on load
-    hapticSuccess();
+        const duration = 3000;
+        const end = Date.now() + duration;
 
-    // Hide back button on success
-    tg.BackButton.hide();
+        (function frame() {
+            confetti({
+                particleCount: 7,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#4338CA', '#EC4899', '#10B981', '#FBBF24']
+            });
+            confetti({
+                particleCount: 7,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#4338CA', '#EC4899', '#10B981', '#FBBF24']
+            });
+
+            if (Date.now() < end) {
+                requestAnimationFrame(frame);
+            }
+        }());
+
+        // 添加爽快的连续震动反馈 (多巴胺节奏)
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.HapticFeedback) {
+            // 瞬间重击
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+
+            // 前 1.5 秒密集震动
+            let vibeCount = 0;
+            const vibeInt = setInterval(() => {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred(vibeCount % 3 === 0 ? 'medium' : 'light');
+                vibeCount++;
+                if (vibeCount > 15) clearInterval(vibeInt);
+            }, 100);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+        // Only show close button if running in Telegram Web App
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
+            tg.MainButton.setText('关闭页面');
+            tg.MainButton.show();
+            tg.MainButton.enable();
+
+            tg.MainButton.onClick(function () {
+                tg.close();
+            });
+        }
+
+        // Disable back button on success
+        if (window.tg && window.tg.BackButton) {
+            window.tg.BackButton.hide();
+        }
+
+        // Play confetti on load
+        playConfetti();
+    });
 </script>
 {% endblock %}

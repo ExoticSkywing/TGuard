@@ -19,7 +19,7 @@ router = Router()
 async def cmd_start(message: Message):
     """Handle /start command."""
     await message.answer(
-        "🤖 *TGuard 群组验证机器人*\n\n"
+        "🤖 *Nebuluxe 群组验证机器人*\n\n"
         "🛡️ *自动验证新成员身份，防止机器人和恶意用户进入群组*\n\n"
         "*功能：*\n"
         "• 新成员申请加群时自动发送验证链接\n"
@@ -34,12 +34,12 @@ async def cmd_start(message: Message):
 async def cmd_help(message: Message):
     """Handle /help command."""
     await message.answer(
-        "🤖 *TGuard 群组验证机器人*\n\n"
+        "🤖 *Nebuluxe 群组验证机器人*\n\n"
         "🛡️ *自动验证新成员身份，防止机器人和恶意用户进入群组*\n\n"
         "*使用说明：*\n"
-        "如何使用请见 [README](https://github.com/SideCloudGroup/TGuard/blob/main/README.md)\n\n"
+        "如需帮助请联系 [Nebuluxe](https://t.me/nebuluxe)\n\n"
         "*技术支持：*\n"
-        "由 [TGuard](https://github.com/SideCloudGroup/TGuard) 提供技术支持",
+        "由 [Nebuluxe](https://t.me/nebuluxe) 提供技术支持",
         parse_mode="MarkdownV2",
         disable_web_page_preview=True
     )
@@ -74,7 +74,7 @@ async def cmd_stats(message: Message):
         current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         
         stats_text = (
-            f"📊 *TGuard 统计信息*\n"
+            f"📊 *Nebuluxe 统计信息*\n"
             f"⏰ 更新时间：`{current_time}`\n\n"
             f"📈 *总体统计*\n"
             f"• 总验证请求：`{total_requests}`\n"

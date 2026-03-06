@@ -1,76 +1,97 @@
 {% extends "base.html" %}
 
-{% block title %}TGuard - 智能验证机器人{% endblock %}
+{% block title %}Nebuluxe - 智能验证机器人{% endblock %}
 
 {% block content %}
-<div class="flex-1 flex flex-col justify-center">
-    <div class="card">
-        <div class="text-center">
-            <div class="text-8xl mb-6">🤖</div>
-            <h1 class="text-4xl font-bold mb-4 text-fg">TGuard</h1>
-            <p class="text-xl mb-6 text-fg-secondary">智能验证机器人</p>
+<div class="flex-1 flex flex-col p-4 w-full max-w-md mx-auto">
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                    <div class="text-blue-700">
-                        <div class="text-2xl mb-2">🔐</div>
-                        <div class="font-medium">安全验证</div>
-                        <div class="text-sm">高级人机验证技术</div>
-                    </div>
-                </div>
+    <!-- Hero Section -->
+    <div class="brutal-card bg-[#FFFDF0] p-6 mb-8 mt-4 text-center relative overflow-hidden">
+        <!-- Decorative bg elements -->
+        <div
+            class="absolute -top-10 -right-10 text-9xl text-brand-yellow opacity-20 transform rotate-12 animate-wiggle">
+            ⚡</div>
+        <div class="absolute -bottom-8 -left-8 text-8xl text-brand-pink opacity-20 transform -rotate-12 animate-float">
+            🛡️</div>
 
-                <div class="bg-green-50 border border-green-200 rounded-lg p-4">
-                    <div class="text-green-700">
-                        <div class="text-2xl mb-2">⚡</div>
-                        <div class="font-medium">自动处理</div>
-                        <div class="text-sm">验证通过即刻生效</div>
-                    </div>
-                </div>
+        <div class="relative z-10">
+            <div class="text-7xl mb-4 animate-float">🛸</div>
+            <h1 class="font-display text-5xl font-black mb-2 uppercase tracking-tight text-brand-black"
+                style="line-height: 1;">
+                Nebuluxe<br><span class="text-brand-blue">护卫舰</span>
+            </h1>
+            <p
+                class="font-sans text-lg font-medium text-brand-black mt-4 bg-brand-yellow inline-block px-3 py-1 border-2 border-brand-black rounded-sm transform -rotate-2">
+                最野的群组守卫！
+            </p>
+        </div>
+    </div>
 
-                <div class="bg-purple-50 border border-purple-200 rounded-lg p-4">
-                    <div class="text-purple-700">
-                        <div class="text-2xl mb-2">🛡️</div>
-                        <div class="font-medium">防护机制</div>
-                        <div class="text-sm">有效阻止恶意用户</div>
-                    </div>
-                </div>
-
-                <div class="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                    <div class="text-orange-700">
-                        <div class="text-2xl mb-2">📱</div>
-                        <div class="font-medium">用户友好</div>
-                        <div class="text-sm">简单易用的界面</div>
-                    </div>
-                </div>
+    <!-- Case Study / Stats (Replacing plain features) -->
+    <h2 class="font-display text-3xl font-black uppercase mb-4 text-brand-black">能力展示 🎯</h2>
+    <div class="grid grid-cols-2 gap-4 mb-8">
+        <div
+            class="brutal-card bg-brand-pink p-4 flex flex-col items-center justify-center transform transition hover:scale-105">
+            <div class="text-4xl mb-2">💥</div>
+            <div class="font-display text-3xl font-black text-white">99.9%</div>
+            <div class="text-sm font-bold text-brand-black uppercase">拦截率</div>
+        </div>
+        <div
+            class="brutal-card bg-brand-yellow p-4 flex flex-col items-center justify-center transform transition hover:-scale-105">
+            <div class="text-4xl mb-2">🚀</div>
+            <div class="font-display text-3xl font-black text-brand-black">0.5s</div>
+            <div class="text-sm font-bold text-brand-black uppercase">极速验证</div>
+        </div>
+        <div class="brutal-card bg-brand-green p-4 col-span-2 flex items-center justify-between">
+            <div>
+                <div class="font-display text-2xl font-black text-brand-black">10M+</div>
+                <div class="text-sm font-bold text-brand-black uppercase">已拦截恶意机器</div>
             </div>
+            <div class="text-5xl animate-wiggle">👽</div>
+        </div>
+    </div>
 
-            <div class="bg-secondary border border-gray-200 rounded-lg p-6 mb-6">
-                <h3 class="font-bold mb-3 text-fg">📋 使用流程</h3>
-                <div class="text-left space-y-2 text-sm">
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">1</span>
-                        <span class="text-fg">发起验证请求</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">2</span>
-                        <span class="text-fg">收到验证链接</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-blue-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">3</span>
-                        <span class="text-fg">完成人机验证</span>
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-green-500 text-white rounded-full w-6 h-6 flex items-center justify-center text-xs">4</span>
-                        <span class="text-fg">验证完成</span>
-                    </div>
-                </div>
+    <!-- Process Timeline -->
+    <div class="brutal-card bg-[#E0E7FF] p-6 mb-8">
+        <h3 class="font-display font-black text-2xl mb-4 uppercase text-brand-black border-b-4 border-brand-black pb-2">
+            使用流程 📋</h3>
+        <div class="space-y-4 font-sans font-bold">
+            <div
+                class="flex items-center space-x-3 bg-white p-3 border-2 border-brand-black rounded-lg shadow-brutal-sm">
+                <span
+                    class="bg-brand-blue text-white w-8 h-8 flex flex-shrink-0 items-center justify-center text-lg font-display font-black border-2 border-brand-black rounded-full">1</span>
+                <span>加群碰壁，收到拦截信息 🛑</span>
             </div>
-
-            <div class="text-sm text-fg-hint">
-                <p>Powered by <a class="text-fg-link hover:text-blue-800 font-medium" href="https://github.com/SideCloudGroup/TGuard"
-                                 target="_blank">TGuard</a></p>
+            <div
+                class="flex items-center space-x-3 bg-white p-3 border-2 border-brand-black rounded-lg shadow-brutal-sm ml-4">
+                <span
+                    class="bg-brand-pink text-white w-8 h-8 flex flex-shrink-0 items-center justify-center text-lg font-display font-black border-2 border-brand-black rounded-full">2</span>
+                <span>点击酷炫的验证按钮 ✨</span>
+            </div>
+            <div
+                class="flex items-center space-x-3 bg-brand-yellow p-3 border-2 border-brand-black rounded-lg shadow-brutal-sm ml-8 transform rotate-1">
+                <span
+                    class="bg-brand-green text-brand-black w-8 h-8 flex flex-shrink-0 items-center justify-center text-lg font-display font-black border-2 border-brand-black rounded-full">3</span>
+                <span>验证通过，进群狂欢！ 🎉</span>
             </div>
         </div>
+    </div>
+
+    <!-- Action area inside content (fallback if Telegram Main Button is off) -->
+    <div class="text-center mb-8">
+        <button onclick="window.open('https://t.me/nebuluxe', '_blank')" class="brutal-btn w-full text-xl py-4">
+            🔥 了解更多详情
+        </button>
+    </div>
+
+    <!-- Footer -->
+    <div class="mt-auto pt-4 text-center">
+        <p
+            class="font-sans font-bold text-brand-black bg-white inline-block px-4 py-2 border-2 border-brand-black rounded-full shadow-brutal-sm text-sm">
+            Powered by <a
+                class="text-brand-pink hover:text-brand-blue underline decoration-2 underline-offset-2 transition-colors"
+                href="https://t.me/nebuluxe" target="_blank">Nebuluxe</a>
+        </p>
     </div>
 </div>
 {% endblock %}
@@ -84,7 +105,7 @@
     tg.MainButton.setText('了解更多');
     tg.MainButton.onClick(function () {
         // Link to GitHub project
-        window.open('https://github.com/SideCloudGroup/TGuard', '_blank');
+        window.open('https://t.me/nebuluxe', '_blank');
     });
 </script>
 {% endblock %}

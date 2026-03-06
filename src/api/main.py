@@ -39,7 +39,7 @@ async def lifespan(app: FastAPI):
 
 # Create FastAPI app
 app = FastAPI(
-    title="TGuard API",
+    title="Nebuluxe API",
     description="Telegram Group Verification Bot API",
     version="1.0.0",
     lifespan=lifespan

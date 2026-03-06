@@ -1,196 +1,383 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
-    <title>{% block title %}TGuard 验证{% endblock %}</title>
+    <title>{% block title %}Nebuluxe 验证{% endblock %}</title>
 
     <!-- Telegram Web App SDK -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-    <!-- Modern CSS Framework -->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <!-- Google Fonts: Space Grotesk for bold headers, Outfit for friendly body text -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&family=Space+Grotesk:wght@500;700;900&display=swap"
+        rel="stylesheet">
 
-    <!-- Custom styles -->
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            blue: '#4338CA',
+                            pink: '#EC4899',
+                            yellow: '#FBBF24',
+                            green: '#10B981',
+                            black: '#0F172A',
+                            bg: '#FFFDF0'
+                        }
+                    },
+                    boxShadow: {
+                        'brutal': '4px 4px 0px 0px #0F172A',
+                        'brutal-lg': '8px 8px 0px 0px #0F172A',
+                        'brutal-sm': '2px 2px 0px 0px #0F172A',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Neo-Brutalism Custom Styles -->
     <style>
         :root {
-            --tg-theme-bg-color: var(--tg-theme-bg-color, #ffffff);
-            --tg-theme-text-color: var(--tg-theme-text-color, #000000);
-            --tg-theme-hint-color: var(--tg-theme-hint-color, #999999);
-            --tg-theme-link-color: var(--tg-theme-link-color, #2481cc);
-            --tg-theme-button-color: var(--tg-theme-button-color, #2481cc);
-            --tg-theme-button-text-color: var(--tg-theme-button-text-color, #ffffff);
-            --tg-theme-secondary-bg-color: var(--tg-theme-secondary-bg-color, #f1f1f1);
-            --tg-theme-section-bg-color: var(--tg-theme-section-bg-color, #ffffff);
-            --tg-theme-section-header-text-color: var(--tg-theme-section-header-text-color, #000000);
-            --tg-theme-subtitle-text-color: var(--tg-theme-subtitle-text-color, #999999);
+            --tg-theme-bg-color: var(--tg-theme-bg-color, #FFFDF0);
+            --tg-theme-text-color: var(--tg-theme-text-color, #0F172A);
         }
 
         body {
-            background-color: var(--tg-theme-bg-color);
-            color: var(--tg-theme-text-color);
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            /* Fallback to brand-bg if Telegram theme doesn't force a dark mode, 
+               Brutalism needs a vibrant or punchy background. */
+            background-color: #FFFDF0;
+            color: #0F172A;
             margin: 0;
             padding: 0;
             overflow-x: hidden;
+            font-family: 'Outfit', sans-serif;
+            background-image: radial-gradient(#0F172A 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0;
+            /* Slight opacity to the dots */
+            background-color: rgba(255, 253, 240, 0.95);
         }
 
-        .tg-button {
-            background-color: var(--tg-theme-button-color);
-            color: var(--tg-theme-button-text-color);
-            border: none;
-            border-radius: 8px;
+        /* --- BRUTALIST COMPONENTS --- */
+        .brutal-card {
+            background-color: #FFFFFF;
+            border: 3px solid #0F172A;
+            border-radius: 12px;
+            box-shadow: 6px 6px 0px 0px #0F172A;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .brutal-btn {
+            background-color: #4338CA;
+            /* Brand Blue */
+            color: #FFFFFF;
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.125rem;
             padding: 12px 24px;
-            font-size: 16px;
-            font-weight: 500;
+            border: 3px solid #0F172A;
+            border-radius: 8px;
+            box-shadow: 4px 4px 0px 0px #0F172A;
             cursor: pointer;
-            transition: all 0.2s ease;
+            transition: all 0.15s ease-out;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        .tg-button:hover {
-            opacity: 0.8;
+        .brutal-btn:hover {
+            transform: translate(-2px, -2px);
+            box-shadow: 6px 6px 0px 0px #0F172A;
         }
 
-        .tg-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
+        .brutal-btn:active {
+            transform: translate(4px, 4px);
+            box-shadow: 0px 0px 0px 0px #0F172A;
         }
 
-        .loading-spinner {
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid var(--tg-theme-button-color);
-            border-radius: 50%;
+        .brutal-btn-pink {
+            background-color: #EC4899;
+        }
+
+        .brutal-btn-yellow {
+            background-color: #FBBF24;
+            color: #0F172A;
+        }
+
+        /* --- ANIMATIONS --- */
+        .animate-float {
+            display: inline-block !important;
+            transform-origin: center center;
+            -webkit-animation: float 3s ease-in-out infinite;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @-webkit-keyframes float {
+            0% {
+                -webkit-transform: translateY(0px);
+                transform: translateY(0px);
+            }
+
+            50% {
+                -webkit-transform: translateY(-10px);
+                transform: translateY(-10px);
+            }
+
+            100% {
+                -webkit-transform: translateY(0px);
+                transform: translateY(0px);
+            }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        .animate-wiggle {
+            display: inline-block !important;
+            transform-origin: center center;
+            -webkit-animation: wiggle 2s linear infinite;
+            animation: wiggle 2s linear infinite;
+        }
+
+        @-webkit-keyframes wiggle {
+
+            0%,
+            7% {
+                -webkit-transform: rotateZ(0);
+                transform: rotateZ(0);
+            }
+
+            15% {
+                -webkit-transform: rotateZ(-8deg);
+                transform: rotateZ(-8deg);
+            }
+
+            20% {
+                -webkit-transform: rotateZ(6deg);
+                transform: rotateZ(6deg);
+            }
+
+            25% {
+                -webkit-transform: rotateZ(-8deg);
+                transform: rotateZ(-8deg);
+            }
+
+            30% {
+                -webkit-transform: rotateZ(4deg);
+                transform: rotateZ(4deg);
+            }
+
+            35%,
+            100% {
+                -webkit-transform: rotateZ(0);
+                transform: rotateZ(0);
+            }
+        }
+
+        @keyframes wiggle {
+
+            0%,
+            7% {
+                transform: rotateZ(0);
+            }
+
+            15% {
+                transform: rotateZ(-8deg);
+            }
+
+            20% {
+                transform: rotateZ(6deg);
+            }
+
+            25% {
+                transform: rotateZ(-8deg);
+            }
+
+            30% {
+                transform: rotateZ(4deg);
+            }
+
+            35%,
+            100% {
+                transform: rotateZ(0);
+            }
+        }
+
+        .error-shake {
+            animation: brutalShake 0.4s cubic-bezier(.36, .07, .19, .97) both;
+            border-color: #EF4444;
+            background-color: #FEF2F2;
+        }
+
+        @keyframes brutalShake {
+
+            10%,
+            90% {
+                transform: translate3d(-2px, 0, 0) rotate(-1deg);
+            }
+
+            20%,
+            80% {
+                transform: translate3d(4px, 0, 0) rotate(2deg);
+            }
+
+            30%,
+            50%,
+            70% {
+                transform: translate3d(-6px, 0, 0) rotate(-2deg);
+                box-shadow: 8px 8px 0px 0px #EF4444;
+            }
+
+            40%,
+            60% {
+                transform: translate3d(6px, 0, 0) rotate(2deg);
+            }
+        }
+
+        .success-pop {
+            animation: brutalPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            border-color: #10B981;
+        }
+
+        @keyframes brutalPop {
+            0% {
+                transform: scale(0.8) translateY(20px);
+                opacity: 0;
+                box-shadow: 0 0 0 #0F172A;
+            }
+
+            50% {
+                transform: scale(1.05) translateY(-5px);
+                box-shadow: 8px 8px 0px #10B981;
+            }
+
+            100% {
+                transform: scale(1) translateY(0);
+                opacity: 1;
+                box-shadow: 6px 6px 0px #0F172A;
+            }
+        }
+
+        /* Loading Spinner Brutalist */
+        .brutal-spinner {
             width: 24px;
             height: 24px;
-            animation: spin 1s linear infinite;
+            border: 4px solid #0F172A;
+            border-bottom-color: transparent;
+            border-radius: 50%;
             display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
             margin-right: 8px;
         }
 
-        @keyframes spin {
+        @keyframes rotation {
             0% {
                 transform: rotate(0deg);
             }
+
             100% {
                 transform: rotate(360deg);
             }
         }
 
-        .card {
-            background: var(--tg-theme-section-bg-color);
-            backdrop-filter: blur(10px);
-            border-radius: 16px;
-            padding: 24px;
-            margin: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Telegram theme-aware text colors */
+        /* Helpers */
         .text-fg {
-            color: var(--tg-theme-text-color);
+            color: #0F172A;
         }
 
         .text-fg-secondary {
-            color: var(--tg-theme-subtitle-text-color);
+            color: #475569;
         }
 
         .text-fg-hint {
-            color: var(--tg-theme-hint-color);
+            color: #64748B;
         }
 
         .text-fg-link {
-            color: var(--tg-theme-link-color);
+            color: #4338CA;
+            font-weight: 700;
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+            text-underline-offset: 4px;
         }
 
-        .bg-section {
-            background-color: var(--tg-theme-section-bg-color);
-        }
-
-        .bg-secondary {
-            background-color: var(--tg-theme-secondary-bg-color);
-        }
-
-        .success-animation {
-            animation: successPulse 0.6s ease-out;
-        }
-
-        @keyframes successPulse {
-            0% {
-                transform: scale(0.8);
-                opacity: 0;
-            }
-            50% {
-                transform: scale(1.05);
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
-        .error-shake {
-            animation: errorShake 0.5s ease-out;
-        }
-
-        @keyframes errorShake {
-            0%, 100% {
-                transform: translateX(0);
-            }
-            25% {
-                transform: translateX(-5px);
-            }
-            75% {
-                transform: translateX(5px);
-            }
+        .text-fg-link:hover {
+            color: #EC4899;
         }
     </style>
 
     {% block extra_head %}{% endblock %}
 </head>
+
 <body>
-<div class="min-h-screen flex flex-col">
-    {% block content %}{% endblock %}
-</div>
+    <div class="min-h-screen flex flex-col">
+        {% block content %}{% endblock %}
+    </div>
 
-<script>
-    // Initialize Telegram Web App
-    const tg = window.Telegram.WebApp;
+    <script>
+        // Initialize Telegram Web App
+        const tg = window.Telegram.WebApp;
 
-    // Configure the app
-    tg.ready();
-    tg.expand();
+        // Configure the app
+        tg.ready();
+        tg.expand();
 
-    // Set header color
-    tg.setHeaderColor('secondary_bg_color');
+        // Set header color
+        tg.setHeaderColor('secondary_bg_color');
 
-    // Disable closing confirmation for better UX
-    tg.disableClosingConfirmation();
+        // Disable closing confirmation for better UX
+        tg.disableClosingConfirmation();
 
-    // Global error handler
-    window.addEventListener('error', function (e) {
-        console.error('Global error:', e.error);
-    });
+        // Global error handler
+        window.addEventListener('error', function (e) {
+            console.error('Global error:', e.error);
+        });
 
-    // Show/hide loading
-    function showLoading(element, text = '处理中...') {
-        if (element) {
-            element.innerHTML = `<span class="loading-spinner"></span>${text}`;
-            element.disabled = true;
+        // Show/hide loading
+        function showLoading(element, text = '处理中...') {
+            if (element) {
+                element.innerHTML = `<span class="loading-spinner"></span>${text}`;
+                element.disabled = true;
+            }
         }
-    }
 
-    function hideLoading(element, text = '继续') {
-        if (element) {
-            element.innerHTML = text;
-            element.disabled = false;
+        function hideLoading(element, text = '继续') {
+            if (element) {
+                element.innerHTML = text;
+                element.disabled = false;
+            }
         }
-    }
 
-    // Show success message
-    function showSuccess(message) {
-        const container = document.getElementById('message-container');
-        if (container) {
-            container.innerHTML = `
+        // Show success message
+        function showSuccess(message) {
+            const container = document.getElementById('message-container');
+            if (container) {
+                container.innerHTML = `
                     <div class="card success-animation">
                         <div class="text-center">
                             <div class="text-4xl mb-4">✅</div>
@@ -198,14 +385,14 @@
                         </div>
                     </div>
                 `;
+            }
         }
-    }
 
-    // Show error message
-    function showError(message) {
-        const container = document.getElementById('message-container');
-        if (container) {
-            container.innerHTML = `
+        // Show error message
+        function showError(message) {
+            const container = document.getElementById('message-container');
+            if (container) {
+                container.innerHTML = `
                     <div class="card error-shake">
                         <div class="text-center">
                             <div class="text-4xl mb-4">❌</div>
@@ -213,28 +400,29 @@
                         </div>
                     </div>
                 `;
+            }
         }
-    }
 
-    // Close the web app
-    function closeWebApp() {
-        tg.close();
-    }
-
-    // Haptic feedback
-    function hapticSuccess() {
-        if (tg.HapticFeedback) {
-            tg.HapticFeedback.notificationOccurred('success');
+        // Close the web app
+        function closeWebApp() {
+            tg.close();
         }
-    }
 
-    function hapticError() {
-        if (tg.HapticFeedback) {
-            tg.HapticFeedback.notificationOccurred('error');
+        // Haptic feedback
+        function hapticSuccess() {
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.notificationOccurred('success');
+            }
         }
-    }
-</script>
 
-{% block extra_scripts %}{% endblock %}
+        function hapticError() {
+            if (tg.HapticFeedback) {
+                tg.HapticFeedback.notificationOccurred('error');
+            }
+        }
+    </script>
+
+    {% block extra_scripts %}{% endblock %}
 </body>
+
 </html>

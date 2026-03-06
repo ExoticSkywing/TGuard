@@ -41,7 +41,7 @@ class TurnstileProvider(CaptchaProvider):
                     data=data,
                     headers={
                         "Content-Type": "application/x-www-form-urlencoded",
-                        "User-Agent": user_agent or "TGuard-Bot/1.0"
+                        "User-Agent": user_agent or "Nebuluxe-Bot/1.0"
                     }
                 )
 

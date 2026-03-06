@@ -1,26 +1,10 @@
 version: '3.8'
 
 services:
-  postgres:
-    image: postgres:16-alpine
-    environment:
-      POSTGRES_DB: tguard
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-    volumes:
-      - ./data:/var/lib/postgresql/data
-    healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    restart: unless-stopped
-
   bot:
-    image: ghcr.io/sidecloudgroup/tguard:latest
-    depends_on:
-      postgres:
-        condition: service_healthy
+    build: .
+    networks:
+      - 1panel-network
     environment:
       - PYTHONPATH=/app
     volumes:
@@ -35,10 +19,9 @@ services:
       start_period: 40s
 
   api:
-    image: ghcr.io/sidecloudgroup/tguard:latest
-    depends_on:
-      postgres:
-        condition: service_healthy
+    build: .
+    networks:
+      - 1panel-network
     ports:
       - "17985:8000"
     environment:
@@ -53,3 +36,7 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+networks:
+  1panel-network:
+    external: true

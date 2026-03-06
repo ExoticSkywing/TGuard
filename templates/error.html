@@ -1,46 +1,51 @@
 {% extends "base.html" %}
 
-{% block title %}出现错误 - TGuard{% endblock %}
+{% block title %}出现错误 - Nebuluxe{% endblock %}
 
 {% block content %}
-<div class="flex-1 flex flex-col justify-center">
-    <div class="card error-shake">
-        <div class="text-center">
-            <div class="text-8xl mb-6">❌</div>
-            <h1 class="text-3xl font-bold mb-4 text-red-600">出现错误</h1>
-            <p class="text-lg mb-6 text-gray-600">{{ message }}</p>
+<div class="flex-1 flex flex-col p-4 w-full max-w-md mx-auto justify-center">
+    <div class="brutal-card bg-white p-6 error-shake relative">
+        <div class="absolute -top-6 -right-4 text-5xl transform rotate-12">⚠️</div>
 
-            <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
-                <div class="text-red-700">
-                    <div class="font-medium mb-2">🔧 解决方案：</div>
-                    <ul class="text-left space-y-1 text-sm">
-                        <li>• 检查网络连接</li>
-                        <li>• 刷新页面重试</li>
-                        <li>• 重新发起验证</li>
-                        <li>• 联系管理员</li>
+        <div class="text-center">
+            <div class="text-7xl mb-4 font-display font-black text-[#EF4444]">X_X</div>
+            <h1 class="font-display text-4xl font-black mb-3 text-brand-black uppercase">出故障啦！</h1>
+            <p
+                class="font-sans font-bold text-lg text-[#EF4444] bg-[#FEF2F2] inline-block px-4 py-2 border-2 border-[#EF4444] rounded-sm transform -rotate-1 mb-6 shadow-brutal-sm">
+                {{ message }}
+            </p>
+
+            <div
+                class="bg-brand-yellow border-4 border-brand-black rounded-lg p-4 mb-6 shadow-brutal-sm transform hover:scale-105 transition-transform">
+                <div class="text-brand-black">
+                    <div
+                        class="font-display font-black text-xl mb-2 text-left bg-white inline-block px-2 border-2 border-brand-black -ml-6 -mt-8 shadow-brutal-sm">
+                        自救指南 🚑</div>
+                    <ul class="text-left space-y-2 text-sm font-bold mt-2">
+                        <li class="flex items-center space-x-2"><span class="text-xl">👉</span><span>检查网络连接</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-xl">👉</span><span>刷新页面重试</span></li>
+                        <li class="flex items-center space-x-2"><span class="text-xl">👉</span><span>重新发起验证</span></li>
                     </ul>
                 </div>
             </div>
 
-            <div class="space-y-3">
-                <button
-                        class="tg-button w-full"
-                        onclick="window.location.reload()"
-                >
-                    刷新页面
+            <div class="space-y-4">
+                <button class="brutal-btn w-full" onclick="window.location.reload()">
+                    🔄 抢救一下 (刷新)
                 </button>
 
-                <button
-                        class="bg-gray-200 text-gray-700 border border-gray-300 rounded-lg px-6 py-3 w-full"
-                        onclick="closeWebApp()"
-                >
-                    返回 Telegram
+                <button class="brutal-btn brutal-btn-pink w-full border-brand-black" onclick="closeWebApp()">
+                    🚪 逃离现场 (返回)
                 </button>
             </div>
 
-            <div class="mt-6 text-sm text-gray-500">
-                <p>📞 如需帮助，请联系管理员</p>
-                <p>⚡ 由 TGuard 提供技术支持</p>
+            <div class="mt-6 border-t-4 border-brand-black pt-4 flex flex-col items-center">
+                <p class="font-sans font-bold text-sm text-brand-black mb-2">📞 求助管理员</p>
+                <p class="font-sans font-bold text-sm text-brand-black">
+                    ⚡ <a href="https://t.me/nebuluxe" target="_blank"
+                        class="text-brand-blue hover:text-brand-pink underline decoration-2 underline-offset-2 transition-colors">Nebuluxe</a>
+                    强力驱动
+                </p>
             </div>
         </div>
     </div>

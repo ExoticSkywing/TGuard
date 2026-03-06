@@ -19,7 +19,7 @@ async def health_check():
     return {
         "status": "healthy",
         "timestamp": datetime.utcnow().isoformat(),
-        "service": "TGuard API"
+        "service": "Nebuluxe API"
     }
 
 
@@ -29,7 +29,7 @@ async def detailed_health_check():
     health_status = {
         "status": "healthy",
         "timestamp": datetime.utcnow().isoformat(),
-        "service": "TGuard API",
+        "service": "Nebuluxe API",
         "version": "1.0.0",
         "checks": {}
     }

@@ -38,7 +38,7 @@ async def verification_page(request: Request, token: str):
             logger.info(f"Verification already completed: {token}")
             return templates.TemplateResponse(
                 "completed.html",
-                {"request": request, "message": "您已完成验证，请等待管理员审核"}
+                {"request": request, "message": "您已经是通过验证的贵宾了，请返回群聊~"}
             )
 
         # Pass expected user_id to template for client-side validation
